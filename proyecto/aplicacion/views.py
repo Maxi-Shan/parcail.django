@@ -22,7 +22,7 @@ def crear_cliente(request):
         form = ClienteForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('resumen_eventos')  # Redirige a la vista de eventos
+            return redirect('resumen_eventos')  
     else:
         form = ClienteForm()
 
@@ -34,7 +34,7 @@ def crear_reserva(request):
         form = ReservaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('resumen_eventos')  # Redirige al resumen de eventos
+            return redirect('resumen_eventos')  
     else:
         form = ReservaForm()
 
@@ -46,7 +46,7 @@ def registrar_pago(request):
         form = PagoForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('resumen_eventos')  # Redirige a la vista de eventos después del pago
+            return redirect('resumen_eventos') 
     else:
         form = PagoForm()
 
@@ -57,7 +57,7 @@ def crear_factura(request):
         form = FacturaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('historial_facturacion')  # Redirige al historial de facturación después de guardar
+            return redirect('historial_facturacion')  
     else:
         form = FacturaForm()
 
@@ -73,17 +73,22 @@ def resumen_eventos(request):
 
     reservas = Reserva.objects.all()
 
-
     if fecha_inicio and fecha_fin:
         reservas = reservas.filter(
             Q(fecha_inicio__gte=fecha_inicio) & Q(fecha_fin__lte=fecha_fin)
         )
     
-
     if espacio_id:
         reservas = reservas.filter(espacio_id=espacio_id)
 
     espacios = Espacio.objects.all()
+
+    for reserva in reservas:
+        factura = reserva.factura_set.last()  # 
+        if factura:
+            reserva.estado_factura = factura.estado  
+        else:
+            reserva.estado_factura = 'Pendiente'
 
     return render(request, 'resumen_eventos.html', {
         'reservas': reservas,

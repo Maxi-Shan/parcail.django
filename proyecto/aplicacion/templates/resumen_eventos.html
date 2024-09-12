@@ -48,13 +48,8 @@
                     <td>{{ reserva.cliente.nombre }}</td>
                     <td>{{ reserva.fecha_inicio }}</td>
                     <td>{{ reserva.fecha_fin }}</td>
-                    <td>
-                        {% if reserva.pago_set.last %}
-                            {{ reserva.pago_set.last.estado }}
-                        {% else %}
-                            Pendiente
-                        {% endif %}
-                    </td>
+                    <td>{{ reserva.estado_factura }}</td>
+                    
                 </tr>
                 {% empty %}
                 <tr>
@@ -63,6 +58,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        <a href="{% url 'inicio' %}">Volver al Inicio</a>
     </div>
 </body>
 </html>
