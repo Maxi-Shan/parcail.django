@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Facturación</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Historial de Facturación</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID de Factura</th>
+                <th>Reserva</th>
+                <th>Fecha de Emisión</th>
+                <th>Total Facturado</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for factura in facturas %}
+                <tr>
+                    <td>{{ factura.id }}</td>
+                    <td>{{ factura.reserva }}</td>
+                    <td>{{ factura.fecha_emision }}</td>
+                    <td>{{ factura.total_facturado }}</td>
+                    <td>{{ factura.estado }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">No hay facturas registradas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'inicio' %}">Volver al Inicio</a>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen de Eventos Programados</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Resumen de Eventos Programados</h1>
+
+        <!-- Formulario de filtrado -->
+        <form method="GET">
+            <label for="fecha_inicio">Fecha Inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+
+            <label for="fecha_fin">Fecha Fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" value="{{ request.GET.fecha_fin }}">
+
+            <label for="espacio">Espacio:</label>
+            <select id="espacio" name="espacio">
+                <option value="">Todos los Espacios</option>
+                {% for espacio in espacios %}
+                    <option value="{{ espacio.id }}" {% if espacio.id == request.GET.espacio %}selected{% endif %}>{{ espacio.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Filtrar</button>
+        </form>
+
+        <!-- Tabla de eventos -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Espacio</th>
+                    <th>Cliente</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Estado del Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                <tr>
+                    <td>{{ reserva.espacio.nombre }}</td>
+                    <td>{{ reserva.cliente.nombre }}</td>
+                    <td>{{ reserva.fecha_inicio }}</td>
+                    <td>{{ reserva.fecha_fin }}</td>
+                    <td>
+                        {% if reserva.pago_set.last %}
+                            {{ reserva.pago_set.last.estado }}
+                        {% else %}
+                            Pendiente
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No hay eventos programados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

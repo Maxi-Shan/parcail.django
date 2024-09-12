@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Pagos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Historial de Pagos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID de Pago</th>
+                <th>Reserva</th>
+                <th>Monto</th>
+                <th>Fecha de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pago in pagos %}
+                <tr>
+                    <td>{{ pago.id }}</td>
+                    <td>{{ pago.reserva }}</td>
+                    <td>{{ pago.monto }}</td>
+                    <td>{{ pago.fecha_pago }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay pagos registrados.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'inicio' %}">Volver al Inicio</a>
+</body>
+</html>
